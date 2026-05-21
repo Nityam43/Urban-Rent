@@ -487,11 +487,5 @@ Urban-Rent/
 ## 👤 Author
 
 **Nityam Savaliya**
-- Developed during internship
 - GitHub: [@Nityam43](https://github.com/Nityam43)
 
----
-
-<p align="center">
-  Built with ❤️ during my internship
-</p>
