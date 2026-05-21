@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth, useUser, SignInButton } from '@clerk/clerk-react';
+import { useAuth, useUser, SignInButton } from '@clerk/react';
 import { apiGet } from '../utils/api';
 import BlogCard from './tenant/BlogCard';
 
@@ -14,7 +14,7 @@ export default function LandingBlogs() {
         const fetchBlogs = async () => {
             try {
                 // Fetch just the latest 2 published blogs
-                const data = await apiGet('/blogs/published?limit=2&page=1');
+                const data = await apiGet('/blogs?limit=2&page=1');
                 setBlogs(data.blogs);
             } catch (err) {
                 console.error('Failed to load landing blogs:', err);

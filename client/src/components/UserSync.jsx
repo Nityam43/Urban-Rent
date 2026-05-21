@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useUser } from '@clerk/clerk-react';
+import { useUser } from '@clerk/react';
 import { apiPost } from '../utils/api';
 import { isFreshImpersonation, clearImpersonation } from '../utils/impersonation';
 

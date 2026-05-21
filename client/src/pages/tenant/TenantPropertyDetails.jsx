@@ -3,7 +3,7 @@ import { useParams, Link, useLocation } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { SignInButton } from '@clerk/clerk-react';
+import { SignInButton } from '@clerk/react';
 import TenantLayout from '../../layouts/TenantLayout';
 import PropertyMediaGallery from '../../components/PropertyMediaGallery';
 import TenantPropertyCard from '../../components/tenant/TenantPropertyCard';

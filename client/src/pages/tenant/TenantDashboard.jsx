@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useUser, SignedIn } from '@clerk/clerk-react';
+import { useUser } from '@clerk/react';
 import TenantLayout from '../../layouts/TenantLayout';
 import TenantPropertyCard from '../../components/tenant/TenantPropertyCard';
 import { apiGet, apiPost } from '../../utils/api';

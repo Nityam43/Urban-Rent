@@ -3,7 +3,7 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { apiGet } from '../utils/api';
 import TenantPropertyCard from './tenant/TenantPropertyCard';
 import { Link } from 'react-router-dom';
-import { useUser, SignInButton } from '@clerk/clerk-react';
+import { useUser, SignInButton } from '@clerk/react';
 
 export default function Properties() {
     const [ref, isVisible] = useScrollAnimation(0.05);

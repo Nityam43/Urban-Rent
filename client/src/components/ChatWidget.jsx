@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useUser } from '@clerk/clerk-react';
+import { useUser } from '@clerk/react';
 import { apiGet, apiPost, apiPatch } from '../utils/api';
 import { io } from 'socket.io-client';
 

@@ -1,4 +1,5 @@
-import { useUser, useAuth } from '@clerk/clerk-react';
+import { useUser, useAuth } from '@clerk/react';
+import { Navigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import TenantLayout from '../layouts/TenantLayout';
 import ManagerLayout from '../layouts/ManagerLayout';
@@ -39,6 +40,10 @@ export default function LandingPage() {
 
     if (isSignedIn && user) {
         const userRole = user?.unsafeMetadata?.role || user?.publicMetadata?.role;
+
+        if (!userRole) {
+            return <Navigate to="/select-role" replace />;
+        }
 
         if (userRole === 'tenant') {
             return (

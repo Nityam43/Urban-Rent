@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useUser, SignInButton } from '@clerk/clerk-react';
+import { useUser, SignInButton } from '@clerk/react';
 import ManagerLayout from '../../layouts/ManagerLayout';
 import { apiGet, apiPost } from '../../utils/api';
 import toast from 'react-hot-toast';

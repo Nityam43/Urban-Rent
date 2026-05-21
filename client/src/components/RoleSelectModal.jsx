@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SignInButton, SignUpButton } from '@clerk/clerk-react';
+import { SignInButton, SignUpButton } from '@clerk/react';
 
 /**
  * RoleSelectModal
@@ -130,7 +130,7 @@ export default function RoleSelectModal({ isOpen, onClose }) {
                         <SignUpButton
                             mode="modal"
                             forceRedirectUrl={redirectUrl}
-                            unsafeMetadata={{ preSelectedRole: selectedRole }}
+                            unsafeMetadata={{ role: selectedRole }}
                         >
                             <button
                                 onClick={onClose}

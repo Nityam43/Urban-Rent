@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useUser, useAuth } from '@clerk/clerk-react';
+import { useUser, useAuth } from '@clerk/react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { apiPost } from '../../utils/api';
 

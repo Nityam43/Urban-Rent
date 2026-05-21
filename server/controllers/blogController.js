@@ -13,7 +13,7 @@ import { io } from '../server.js';
 // Get published blogs (Latest, Trending, Personalized logic applied here)
 export const getBlogs = async (req, res) => {
     try {
-        const { filter = 'latest', category, search } = req.query;
+        const { filter = 'latest', category, search, limit, page } = req.query;
 
         let query = { status: 'published' };
 
@@ -44,7 +44,11 @@ export const getBlogs = async (req, res) => {
             }
         }
 
-        const blogs = await Blog.find(query).sort(sortOption).limit(20);
+        const limitNum = limit ? parseInt(limit) : 20;
+        const pageNum = page ? parseInt(page) : 1;
+        const skip = (pageNum - 1) * limitNum;
+
+        const blogs = await Blog.find(query).sort(sortOption).skip(skip).limit(limitNum);
 
         res.json({ blogs });
     } catch (err) {

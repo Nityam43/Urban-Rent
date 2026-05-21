@@ -1,4 +1,4 @@
-import { useAuth, useUser, RedirectToSignIn } from '@clerk/clerk-react';
+import { useAuth, useUser, RedirectToSignIn } from '@clerk/react';
 import { Navigate } from 'react-router-dom';
 import { isImpersonating } from '../utils/impersonation';
 

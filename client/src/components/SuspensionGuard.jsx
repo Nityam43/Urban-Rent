@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { useUser, useClerk } from '@clerk/clerk-react';
+import { useUser, useClerk } from '@clerk/react';
 import { useLocation } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { isImpersonating, clearImpersonation } from '../utils/impersonation';

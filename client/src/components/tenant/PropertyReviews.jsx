@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { apiGet, apiPost } from '../../utils/api';
-import { useUser } from '@clerk/clerk-react';
+import { useUser } from '@clerk/react';
 import toast from 'react-hot-toast';
 
 export default function PropertyReviews({ propertyId }) {

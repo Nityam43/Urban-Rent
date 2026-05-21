@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { UserButton, SignedIn, useUser } from '@clerk/clerk-react';
+import { UserButton, Show, useUser } from '@clerk/react';
 import { isImpersonating, clearImpersonation } from '../utils/impersonation';
 import NotificationDropdown from '../components/common/NotificationDropdown';
 import ChatWidget from '../components/ChatWidget';
@@ -100,7 +100,7 @@ export default function ManagerLayout({ children, breadcrumbs, isPublicPage }) {
                             )}
                         </div>
                     ) : (
-                        <SignedIn>
+                        <Show when="signed-in">
                             <div className={`flex items-center gap-3 ${expanded ? 'px-2' : 'justify-center'}`}>
                                 <UserButton
                                     afterSignOutUrl="/"
@@ -119,7 +119,7 @@ export default function ManagerLayout({ children, breadcrumbs, isPublicPage }) {
                                     </div>
                                 )}
                             </div>
-                        </SignedIn>
+                        </Show>
                     )
                 )}
             />

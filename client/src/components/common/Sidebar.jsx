@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
-import { SignInButton } from '@clerk/clerk-react';
+import { SignInButton } from '@clerk/react';
 import logoUrl from '../../assets/UrbanRent HD.png';
 
 export default function Sidebar({ items, brandName, bottomContent, badge, isDemo, isImpersonating, expanded, onToggle, brandLink }) {

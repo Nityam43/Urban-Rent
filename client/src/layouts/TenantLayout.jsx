@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import ChatWidget from '../components/ChatWidget';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { UserButton, SignedIn, SignedOut, SignInButton, useUser, useAuth } from '@clerk/clerk-react';
+import { UserButton, Show, SignInButton, useUser, useAuth } from '@clerk/react';
 import { isImpersonating, clearImpersonation } from '../utils/impersonation';
 import NotificationDropdown from '../components/common/NotificationDropdown';
 import Sidebar from '../components/common/Sidebar';
@@ -135,7 +135,7 @@ export default function TenantLayout({ children, breadcrumbs, searchValue, onSea
                             </div>
                         ) : (
                             <>
-                                <SignedIn>
+                                <Show when="signed-in">
                                     <div className={`flex items-center gap-3 ${expanded ? 'px-2' : 'justify-center'}`}>
                                         <UserButton
                                             afterSignOutUrl="/"
@@ -154,8 +154,8 @@ export default function TenantLayout({ children, breadcrumbs, searchValue, onSea
                                             </div>
                                         )}
                                     </div>
-                                </SignedIn>
-                                <SignedOut>
+                                </Show>
+                                <Show when="signed-out">
                                     {expanded ? (
                                         <SignInButton mode="modal">
                                             <button className="w-full py-2.5 rounded-xl text-sm font-bold bg-dark-900 text-white hover:bg-dark-800 transition-colors shadow-sm">
@@ -169,7 +169,7 @@ export default function TenantLayout({ children, breadcrumbs, searchValue, onSea
                                             </button>
                                         </SignInButton>
                                     )}
-                                </SignedOut>
+                                </Show>
                             </>
                         )}
                     </>
@@ -247,12 +247,12 @@ export default function TenantLayout({ children, breadcrumbs, searchValue, onSea
                                         <ChatWidget />
                                     </div>
                                 ) : (
-                                    <SignedIn>
+                                    <Show when="signed-in">
                                         <div className="flex items-center gap-2">
                                             <NotificationDropdown />
                                             <ChatWidget />
                                         </div>
-                                    </SignedIn>
+                                    </Show>
                                 )}
                             </div>
                         </div>

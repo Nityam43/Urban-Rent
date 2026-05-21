@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useUser } from '@clerk/clerk-react';
+import { useUser } from '@clerk/react';
 import { Link } from 'react-router-dom';
 import ManagerLayout from '../../layouts/ManagerLayout';
 import { apiGet, apiPatch } from '../../utils/api';

@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { SignedIn, SignedOut, useUser } from '@clerk/clerk-react';
+import { Show, useUser } from '@clerk/react';
 import { Toaster } from 'react-hot-toast';
 
 // Pages
@@ -77,9 +77,9 @@ function App() {
         <Route
           path="/sso-callback"
           element={
-            <SignedIn>
+            <Show when="signed-in">
               <PostLoginRedirect />
-            </SignedIn>
+            </Show>
           }
         />
 

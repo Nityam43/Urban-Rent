@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import TenantLayout from '../../layouts/TenantLayout';
 import { apiGet, apiPost } from '../../utils/api';
-import { useUser } from '@clerk/clerk-react';
+import { useUser } from '@clerk/react';
 
 const STATUS_CONFIG = {
     pending: { label: 'Pending', color: 'bg-amber-50 text-amber-700 border-amber-200', dot: 'bg-amber-500' },

@@ -1,12 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    SignedIn,
-    SignedOut,
+    Show,
     UserButton,
     useUser,
     SignInButton,
-} from '@clerk/clerk-react';
+} from '@clerk/react';
 import RoleSelectModal from './RoleSelectModal';
 
 // Links for logged-in tenants
@@ -90,7 +89,7 @@ export default function Navbar() {
 
                         {/* Desktop Nav Links */}
                         <div className="hidden md:flex items-center flex-shrink-0 z-10 mx-auto">
-                            <SignedOut>
+                            <Show when="signed-out">
                                 <div className="flex items-center gap-1 bg-slate-700/80 backdrop-blur-sm rounded-full px-1.5 py-1.5">
                                     {publicNavLinks.map((link) => {
                                         const classes = `px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 whitespace-nowrap ${link.active
@@ -110,9 +109,9 @@ export default function Navbar() {
                                         );
                                     })}
                                 </div>
-                            </SignedOut>
+                            </Show>
 
-                            <SignedIn>
+                            <Show when="signed-in">
                                 {userRole === 'tenant' ? (
                                     <div className={`flex items-center gap-1 rounded-full px-1.5 py-1.5 transition-all duration-300 ${isScrolled ? 'bg-dark-50 shadow-inner border border-dark-100' : 'bg-slate-700/80 backdrop-blur-sm'}`}>
                                         {TENANT_PRIMARY.map((link) => (
@@ -165,13 +164,13 @@ export default function Navbar() {
                                         <span className="px-5 py-2 text-white/90 text-sm font-medium">Urban Rent Platform</span>
                                     </div>
                                 )}
-                            </SignedIn>
+                            </Show>
                         </div>
 
                         {/* Auth Buttons — Desktop */}
                         <div className="hidden md:flex items-center justify-end gap-3 flex-shrink-0 min-w-[150px]">
                             {/* When user is signed OUT */}
-                            <SignedOut>
+                            <Show when="signed-out">
                                 <SignInButton mode="modal">
                                     <button className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${isScrolled ? 'text-dark-700 hover:text-dark-900 hover:bg-dark-100' : 'text-white/90 hover:text-white hover:bg-white/10'}`}>
                                         Log in
@@ -180,19 +179,19 @@ export default function Navbar() {
                                 <button onClick={() => setRoleModalOpen(true)} className="bg-primary-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-primary-700 transition-all duration-300 shadow-lg active:scale-95 transform cursor-pointer">
                                     Get Started
                                 </button>
-                            </SignedOut>
+                            </Show>
 
                             {/* When user is signed IN */}
-                            <SignedIn>
+                            <Show when="signed-in">
                                 {userRole !== 'tenant' && (
                                     <Link to={dashboardUrl} className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${isScrolled ? 'text-primary-600 hover:bg-primary-50' : 'text-white hover:bg-white/10'}`}>
                                         Dashboard
                                     </Link>
                                 )}
-                                <div className={`rounded-full p-0.5 ${isScrolled ? 'border shadow-sm border-dark-100' : 'bg-white/10'}`}>
+                                <div className={`rounded-full p-0.5 h-10 ${isScrolled ? 'border shadow-sm border-dark-100' : 'bg-white/10'}`}>
                                     <UserButton afterSignOutUrl="/" appearance={{ elements: { avatarBox: 'w-9 h-9' } }} />
                                 </div>
-                            </SignedIn>
+                            </Show>
                         </div>
 
                         {/* Mobile Menu Button */}
@@ -214,15 +213,15 @@ export default function Navbar() {
                     <div className={`md:hidden transition-all duration-300 overflow-hidden ${isMobileMenuOpen ? 'max-h-[500px] mt-4' : 'max-h-0'}`}>
                         <div className="bg-white rounded-2xl shadow-xl p-4 space-y-1">
                             {/* Mobile Nav Links */}
-                            <SignedOut>
+                            <Show when="signed-out">
                                 {publicNavLinks.map((link) => (
                                     <a key={link.label} href={link.href} onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-3 rounded-xl text-dark-700 hover:bg-primary-50 hover:text-primary-700 font-medium transition-colors">
                                         {link.label}
                                     </a>
                                 ))}
-                            </SignedOut>
+                            </Show>
 
-                            <SignedIn>
+                            <Show when="signed-in">
                                 {userRole === 'tenant' ? (
                                     <>
                                         {TENANT_ALL.map((link) => (
@@ -236,28 +235,28 @@ export default function Navbar() {
                                         Go to Dashboard
                                     </Link>
                                 )}
-                            </SignedIn>
+                            </Show>
 
                             <hr className="my-2 border-dark-100" />
 
                             {/* Mobile Buttons */}
-                            <SignedOut>
+                            <Show when="signed-out">
                                 <div className="flex gap-2 pt-2">
                                     <SignInButton mode="modal">
                                         <button onClick={() => setIsMobileMenuOpen(false)} className="flex-1 px-4 py-2.5 rounded-xl text-dark-700 hover:bg-dark-100 font-medium transition-colors text-center">Log in</button>
                                     </SignInButton>
                                     <button onClick={() => { setIsMobileMenuOpen(false); setRoleModalOpen(true); }} className="flex-1 px-4 py-2.5 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition-colors text-center">Get Started</button>
                                 </div>
-                            </SignedOut>
+                            </Show>
 
-                            <SignedIn>
+                            <Show when="signed-in">
                                 <div className="pt-2">
                                     <div className="flex items-center justify-center gap-3 px-4 py-2 border border-dark-100 rounded-xl bg-dark-50">
                                         <span className="text-dark-500 text-sm font-medium">Logged in as {user?.firstName}</span>
                                         <UserButton afterSignOutUrl="/" />
                                     </div>
                                 </div>
-                            </SignedIn>
+                            </Show>
                         </div>
                     </div>
                 </div>
