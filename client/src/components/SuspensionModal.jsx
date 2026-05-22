@@ -34,7 +34,8 @@ export default function SuspensionModal({ reason, suspendedAt, reactivationReque
         setSubmitError('');
 
         try {
-            const res = await fetch('http://localhost:5000/api/users/reactivation-request', {
+            const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+            const res = await fetch(`${apiBase}/users/reactivation-request`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

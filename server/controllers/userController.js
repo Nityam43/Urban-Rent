@@ -173,15 +173,31 @@ export const syncUser = async (req, res) => {
                 await suspendedUserWithEmail.save();
             }
 
-            // Create new fresh account
-            user = await User.create({
-                clerkId,
-                email,
-                firstName: firstName || '',
-                lastName: lastName || '',
-                avatar: avatar || '',
-                role,
-            });
+            // Use findOneAndUpdate with upsert to atomically create or update,
+            // preventing E11000 duplicate key errors from webhook/sync race conditions
+            try {
+                user = await User.findOneAndUpdate(
+                    { clerkId },
+                    {
+                        $setOnInsert: {
+                            clerkId,
+                            email,
+                            firstName: firstName || '',
+                            lastName: lastName || '',
+                            avatar: avatar || '',
+                            role,
+                        },
+                    },
+                    { upsert: true, new: true, setDefaultsOnInsert: true }
+                );
+            } catch (dupErr) {
+                // Narrow race window fallback — the record was just created by the webhook
+                if (dupErr.code === 11000) {
+                    user = await User.findOne({ clerkId });
+                } else {
+                    throw dupErr;
+                }
+            }
         }
 
         res.status(200).json({ user });

@@ -8,7 +8,7 @@ import PropertyVacateNoticeModal from './PropertyVacateNoticeModal';
 import AccountDeletedModal from './AccountDeletedModal';
 import AdminImpersonatingModal from './AdminImpersonatingModal';
 
-const API_BASE = 'http://localhost:5000';
+const API_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace('/api', '');
 
 /**
  * SuspensionGuard - Global component that monitors for live admin actions.
