@@ -20,7 +20,9 @@ export default function ChatWidget() {
         if (!user) return;
         fetchConversations();
         
-        const newSocket = io(import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000');
+        const newSocket = io(import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000', {
+            transports: ['websocket'],
+        });
         setSocket(newSocket);
 
         newSocket.on('connect', () => {

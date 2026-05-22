@@ -14,7 +14,11 @@ export default function SmartToaster({ userRole }) {
         const allowNotifications = localStorage.getItem('urbanrent_allow_blog_notifications') !== 'false';
         if (!allowNotifications) return;
 
-        const newSocket = io(SOCKET_URL, { withCredentials: true });
+        const socketUrl = SOCKET_URL.replace('/api', '');
+        const newSocket = io(socketUrl, {
+            withCredentials: true,
+            transports: ['websocket'],
+        });
 
         newSocket.on('new-blog-alert', (blog) => {
             // Intelligent flash toast!

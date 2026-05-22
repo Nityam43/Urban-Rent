@@ -124,6 +124,7 @@ export default function SuspensionGuard() {
 
         const newSocket = io(API_BASE, {
             withCredentials: true,
+            transports: ['websocket'],
         });
 
         newSocket.on('connect', () => {
