@@ -26,9 +26,15 @@ const server = http.createServer(app);
 const PORT = process.env.PORT || 5000;
 
 // ─── Allowed Origins ───
-const allowedOrigins = process.env.CLIENT_URL
-    ? [process.env.CLIENT_URL, 'http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175']
-    : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'];
+const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'];
+if (process.env.CLIENT_URL) {
+    const urls = process.env.CLIENT_URL.split(',').map(url => url.trim().replace(/\/$/, ''));
+    urls.forEach(url => {
+        if (url && !allowedOrigins.includes(url)) {
+            allowedOrigins.push(url);
+        }
+    });
+}
 
 // ─── Socket.IO Setup ───
 export const io = new Server(server, {
@@ -49,7 +55,17 @@ io.on('connection', (socket) => {
 
 // ─── Middleware ───
 app.use(cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps, curl, node-fetch)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            console.warn(`[CORS] Blocked request from origin: "${origin}". Allowed origins are:`, allowedOrigins);
+            callback(null, false); // Block by not setting Access-Control-Allow-Origin
+        }
+    },
     credentials: true,
 }));
 
@@ -106,10 +122,10 @@ const startServer = async () => {
     server.listen(PORT, () => {
         console.log(`\n  UrbanRent API Server`);
         console.log(`  ────────────────────`);
-        console.log(`  Port:        ${PORT}`);
-        console.log(`  Environment: ${process.env.NODE_ENV || 'development'}`);
-        console.log(`  Client URL:  ${process.env.CLIENT_URL || 'http://localhost:5173, http://localhost:5174'}`);
-        console.log(`  Health:      http://localhost:${PORT}/api/health\n`);
+        console.log(`  Port:            ${PORT}`);
+        console.log(`  Environment:     ${process.env.NODE_ENV || 'development'}`);
+        console.log(`  Configured CORS: ${allowedOrigins.join(', ')}`);
+        console.log(`  Health:          http://localhost:${PORT}/api/health\n`);
     });
 };
 
