@@ -1,49 +1,51 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { Show, useUser } from '@clerk/react';
-import { Toaster } from 'react-hot-toast';
+import { useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { Show, useAuth, useUser } from "@clerk/react";
+import { Toaster } from "react-hot-toast";
+import { setAuthTokenGetter } from "./utils/api";
 
 // Pages
-import LandingPage from './pages/LandingPage';
-import SelectRole from './pages/auth/SelectRole';
-import TenantDashboard from './pages/tenant/TenantDashboard';
-import TenantHome from './pages/tenant/TenantHome';
-import TenantProperties from './pages/tenant/TenantProperties';
-import TenantFavourites from './pages/tenant/TenantFavourites';
-import TenantApplications from './pages/tenant/TenantApplications';
-import TenantSearch from './pages/tenant/TenantSearch';
-import TenantPropertyDetails from './pages/tenant/TenantPropertyDetails';
-import TenantPayments from './pages/tenant/TenantPayments';
-import ManagerDashboard from './pages/manager/ManagerDashboard';
-import AddProperty from './pages/manager/AddProperty';
-import AllProperties from './pages/manager/AllProperties';
-import PropertyDetails from './pages/manager/PropertyDetails';
-import ManagerApplications from './pages/manager/ManagerApplications';
-import ManagerEarnings from './pages/manager/ManagerEarnings';
-import ManagerCredits from './pages/manager/ManagerCredits';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminProperties from './pages/admin/AdminProperties';
-import AdminPropertyDetail from './pages/admin/AdminPropertyDetail';
-import AdminUsers from './pages/admin/AdminUsers';
-import AdminApplications from './pages/admin/AdminApplications';
-import AdminPayments from './pages/admin/AdminPayments';
-import AdminIncome from './pages/admin/AdminIncome';
-import AdminLogin from './pages/admin/AdminLogin';
-import AdminBlogs from './pages/admin/AdminBlogs';
-import DemoRoleSelect from './pages/DemoRoleSelect';
+import LandingPage from "./pages/LandingPage";
+import SelectRole from "./pages/auth/SelectRole";
+import TenantDashboard from "./pages/tenant/TenantDashboard";
+import TenantHome from "./pages/tenant/TenantHome";
+import TenantProperties from "./pages/tenant/TenantProperties";
+import TenantFavourites from "./pages/tenant/TenantFavourites";
+import TenantApplications from "./pages/tenant/TenantApplications";
+import TenantSearch from "./pages/tenant/TenantSearch";
+import TenantPropertyDetails from "./pages/tenant/TenantPropertyDetails";
+import TenantPayments from "./pages/tenant/TenantPayments";
+import ManagerDashboard from "./pages/manager/ManagerDashboard";
+import AddProperty from "./pages/manager/AddProperty";
+import AllProperties from "./pages/manager/AllProperties";
+import PropertyDetails from "./pages/manager/PropertyDetails";
+import ManagerApplications from "./pages/manager/ManagerApplications";
+import ManagerEarnings from "./pages/manager/ManagerEarnings";
+import ManagerCredits from "./pages/manager/ManagerCredits";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminProperties from "./pages/admin/AdminProperties";
+import AdminPropertyDetail from "./pages/admin/AdminPropertyDetail";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminApplications from "./pages/admin/AdminApplications";
+import AdminPayments from "./pages/admin/AdminPayments";
+import AdminIncome from "./pages/admin/AdminIncome";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminBlogs from "./pages/admin/AdminBlogs";
+import DemoRoleSelect from "./pages/DemoRoleSelect";
 
 // Blogs & News
-import TenantBlogs from './pages/tenant/TenantBlogs';
-import TenantBlogDetails from './pages/tenant/TenantBlogDetails';
-import ManagerBlogs from './pages/manager/ManagerBlogs';
-import ManagerBlogDetails from './pages/manager/ManagerBlogDetails';
-import AdminBlogEditor from './pages/admin/AdminBlogEditor';
+import TenantBlogs from "./pages/tenant/TenantBlogs";
+import TenantBlogDetails from "./pages/tenant/TenantBlogDetails";
+import ManagerBlogs from "./pages/manager/ManagerBlogs";
+import ManagerBlogDetails from "./pages/manager/ManagerBlogDetails";
+import AdminBlogEditor from "./pages/admin/AdminBlogEditor";
 
 // Components
-import ProtectedRoute from './components/ProtectedRoute';
-import AdminGuard from './components/AdminGuard';
-import UserSync from './components/UserSync';
-import SmartToaster from './components/SmartToaster';
-import SuspensionGuard from './components/SuspensionGuard';
+import ProtectedRoute from "./components/ProtectedRoute";
+import AdminGuard from "./components/AdminGuard";
+import UserSync from "./components/UserSync";
+import SmartToaster from "./components/SmartToaster";
+import SuspensionGuard from "./components/SuspensionGuard";
 
 /**
  * PostLoginRedirect — After Clerk sign-in, redirect user based on role.
@@ -51,17 +53,23 @@ import SuspensionGuard from './components/SuspensionGuard';
  */
 function PostLoginRedirect() {
   const { user } = useUser();
-  const role = user?.unsafeMetadata?.role || user?.publicMetadata?.role;
+  const role = user?.publicMetadata?.role;
 
   if (!role) return <Navigate to="/select-role" replace />;
-  if (role === 'tenant') return <Navigate to="/tenant/home" replace />;
-  if (role === 'manager') return <Navigate to="/manager/dashboard" replace />;
+  if (role === "tenant") return <Navigate to="/tenant/home" replace />;
+  if (role === "manager") return <Navigate to="/manager/dashboard" replace />;
   return <Navigate to="/" replace />;
 }
 
 function App() {
   const { user } = useUser();
-  const userRole = user?.unsafeMetadata?.role || user?.publicMetadata?.role;
+  const { getToken } = useAuth();
+  const userRole = user?.publicMetadata?.role;
+
+  useEffect(() => {
+    setAuthTokenGetter(getToken);
+    return () => setAuthTokenGetter(null);
+  }, [getToken]);
 
   return (
     <>
@@ -87,16 +95,22 @@ function App() {
         <Route path="/select-role" element={<SelectRole />} />
 
         {/* Knowledge Base — requires login (redirects if not authenticated) */}
-        <Route path="/blogs" element={
+        <Route
+          path="/blogs"
+          element={
             <ProtectedRoute>
-                <TenantBlogs />
+              <TenantBlogs />
             </ProtectedRoute>
-        } />
-        <Route path="/blogs/:slug" element={
+          }
+        />
+        <Route
+          path="/blogs/:slug"
+          element={
             <ProtectedRoute>
-                <TenantBlogDetails />
+              <TenantBlogDetails />
             </ProtectedRoute>
-        } />
+          }
+        />
 
         {/* Tenant Routes */}
         <Route
@@ -353,23 +367,44 @@ function App() {
         <Route path="/demo/tenant/properties" element={<TenantProperties />} />
         <Route path="/demo/tenant/search" element={<TenantSearch />} />
         <Route path="/demo/tenant/favourites" element={<TenantFavourites />} />
-        <Route path="/demo/tenant/applications" element={<TenantApplications />} />
-        <Route path="/demo/tenant/properties/:id" element={<TenantPropertyDetails />} />
+        <Route
+          path="/demo/tenant/applications"
+          element={<TenantApplications />}
+        />
+        <Route
+          path="/demo/tenant/properties/:id"
+          element={<TenantPropertyDetails />}
+        />
         <Route path="/demo/tenant/payments" element={<TenantPayments />} />
         <Route path="/demo/manager" element={<ManagerDashboard />} />
         <Route path="/demo/manager/add-property" element={<AddProperty />} />
-        <Route path="/demo/manager/edit-property/:id" element={<AddProperty />} />
+        <Route
+          path="/demo/manager/edit-property/:id"
+          element={<AddProperty />}
+        />
         <Route path="/demo/manager/properties" element={<AllProperties />} />
-        <Route path="/demo/manager/properties/:id" element={<PropertyDetails />} />
-        <Route path="/demo/manager/applications" element={<ManagerApplications />} />
+        <Route
+          path="/demo/manager/properties/:id"
+          element={<PropertyDetails />}
+        />
+        <Route
+          path="/demo/manager/applications"
+          element={<ManagerApplications />}
+        />
         <Route path="/demo/manager/earnings" element={<ManagerEarnings />} />
         <Route path="/demo/manager/credits" element={<ManagerCredits />} />
 
         {/* Admin Demo Routes */}
         <Route path="/demo/admin" element={<AdminDashboard />} />
         <Route path="/demo/admin/properties" element={<AdminProperties />} />
-        <Route path="/demo/admin/properties/:id" element={<AdminPropertyDetail />} />
-        <Route path="/demo/admin/applications" element={<AdminApplications />} />
+        <Route
+          path="/demo/admin/properties/:id"
+          element={<AdminPropertyDetail />}
+        />
+        <Route
+          path="/demo/admin/applications"
+          element={<AdminApplications />}
+        />
         <Route path="/demo/admin/payments" element={<AdminPayments />} />
         <Route path="/demo/admin/income" element={<AdminIncome />} />
         <Route path="/demo/admin/users" element={<AdminUsers />} />

@@ -9,6 +9,7 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
+    "@clerk/backend": "^3.18.1",
     "cloudinary": "^2.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",

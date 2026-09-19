@@ -21,36 +21,38 @@
  */
 
 // Initialize once at module load time
-const _params  = new URLSearchParams(window.location.search);
-const _fromUrl = _params.get('impersonate');
+const _params = new URLSearchParams(window.location.search);
+const _fromUrl = _params.get("impersonate");
+const _tokenFromUrl = _params.get("impersonationToken");
 
 let _impersonatingId = null;
-let _isFresh         = false;
+let _isFresh = false;
 
 if (_fromUrl) {
-    // FRESH: admin opened this tab with ?impersonate=<id>
-    _impersonatingId = _fromUrl;
-    _isFresh         = true;
+  // FRESH: admin opened this tab with ?impersonate=<id>
+  _impersonatingId = _fromUrl;
+  _isFresh = true;
 
-    // Persist both the ID and the freshness marker for page reload survival
-    sessionStorage.setItem('urbanrent_impersonate', _fromUrl);
-    sessionStorage.setItem('urbanrent_impersonate_fresh', '1');
+  // Persist both the ID and the freshness marker for page reload survival
+  sessionStorage.setItem("urbanrent_impersonate", _fromUrl);
+  sessionStorage.setItem("urbanrent_impersonate_fresh", "1");
+  if (_tokenFromUrl)
+    sessionStorage.setItem("urbanrent_impersonation_token", _tokenFromUrl);
 
-    // Clean the URL param without triggering a page reload
-    const cleanUrl = window.location.pathname + window.location.hash;
-    window.history.replaceState({}, '', cleanUrl);
-
+  // Clean the URL param without triggering a page reload
+  const cleanUrl = window.location.pathname + window.location.hash;
+  window.history.replaceState({}, "", cleanUrl);
 } else {
-    // Try recovering from sessionStorage after a same-tab page reload
-    const storedId    = sessionStorage.getItem('urbanrent_impersonate');
-    const storedFresh = sessionStorage.getItem('urbanrent_impersonate_fresh');
+  // Try recovering from sessionStorage after a same-tab page reload
+  const storedId = sessionStorage.getItem("urbanrent_impersonate");
+  const storedFresh = sessionStorage.getItem("urbanrent_impersonate_fresh");
 
-    if (storedId && storedFresh === '1') {
-        // Still a legit fresh impersonation session (survived reload)
-        _impersonatingId = storedId;
-        _isFresh         = true;
-    }
-    // else: stale key present without fresh marker -> ignore silently
+  if (storedId && storedFresh === "1") {
+    // Still a legit fresh impersonation session (survived reload)
+    _impersonatingId = storedId;
+    _isFresh = true;
+  }
+  // else: stale key present without fresh marker -> ignore silently
 }
 
 // Public API
@@ -69,12 +71,13 @@ export const isFreshImpersonation = () => _isFresh;
  * Clears in-memory state and ALL related storage keys.
  */
 export const clearImpersonation = () => {
-    _impersonatingId = null;
-    _isFresh         = false;
+  _impersonatingId = null;
+  _isFresh = false;
 
-    sessionStorage.removeItem('urbanrent_impersonate');
-    sessionStorage.removeItem('urbanrent_impersonate_fresh');
-    sessionStorage.removeItem('urbanrent_impersonate_data');
-    localStorage.removeItem('urbanrent_impersonate');
-    localStorage.removeItem('urbanrent_impersonate_data');
+  sessionStorage.removeItem("urbanrent_impersonate");
+  sessionStorage.removeItem("urbanrent_impersonate_fresh");
+  sessionStorage.removeItem("urbanrent_impersonate_data");
+  sessionStorage.removeItem("urbanrent_impersonation_token");
+  localStorage.removeItem("urbanrent_impersonate");
+  localStorage.removeItem("urbanrent_impersonate_data");
 };

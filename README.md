@@ -84,7 +84,7 @@ A centralized MERN-stack application featuring role-based dashboards, Leaflet GI
 | Layer | Technology |
 |---|---|
 | **Frontend** | React 19, Vite, Tailwind CSS 3 |
-| **Authentication** | Clerk Identity Management, unsafeMetadata roles |
+| **Authentication** | Clerk Identity Management with verified server tokens and MongoDB-managed roles |
 | **Maps & Charts** | Leaflet Maps, React-Leaflet, Recharts |
 | **Rich Text Editor**| React Quill New |
 | **Routing** | React Router DOM v7 |
@@ -158,7 +158,7 @@ A centralized MERN-stack application featuring role-based dashboards, Leaflet GI
 
 | Module | Frontend Pages | Backend Endpoints | Key Capabilities |
 |--------|---------------|-------------------|-------------------|
-| **Auth & Sync**| Role Select, Dashboard | 2 endpoints | Clerk token verification, unsafeMetadata sync |
+| **Auth & Sync**| Role Select, Dashboard | 2 endpoints | Verified Clerk tokens, server-managed role sync |
 | **Properties** | 6 pages / lists | 12 endpoints | CRUD, Leaflet integration, status cascades, image pipes |
 | **Applications**| 4 pages | 8 endpoints | Create, Accept/Reject, early termination offsets |
 | **Invoices**   | 3 views | 4 endpoints | Generation, due calculations, payment relations |
@@ -375,6 +375,8 @@ PORT=5000
 MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/urbanrent
 CLERK_SECRET_KEY=your_clerk_secret_key
 CLERK_WEBHOOK_SECRET=your_clerk_webhook_secret
+ADMIN_ACCESS_CODE=your_admin_access_code
+ADMIN_SESSION_SECRET=long_random_server_secret
 CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret

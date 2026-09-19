@@ -1,31 +1,44 @@
-import express from 'express';
-import { handleClerkWebhook, getMe, updateMe, syncUser, toggleFavourite, getFavourites, getManagers, getSuspensionStatus, submitReactivationRequest } from '../controllers/userController.js';
-import { authenticateUser } from '../middleware/auth.js';
+import express from "express";
+import {
+  handleClerkWebhook,
+  getMe,
+  updateMe,
+  syncUser,
+  toggleFavourite,
+  getFavourites,
+  getManagers,
+  getSuspensionStatus,
+  submitReactivationRequest,
+} from "../controllers/userController.js";
+import { authenticateIdentity, authenticateUser } from "../middleware/auth.js";
 
 const router = express.Router();
 
 // Clerk Webhook (no auth — Clerk calls this)
-router.post('/webhooks/clerk', handleClerkWebhook);
+router.post("/webhooks/clerk", handleClerkWebhook);
 
 // Sync user from client (no auth middleware — used during registration)
-router.post('/sync', syncUser);
+router.post("/sync", authenticateIdentity, syncUser);
 
 // Public route — list managers
-router.get('/managers', getManagers);
+router.get("/managers", getManagers);
 
 // Suspension status check (no auth middleware — suspended users need access)
-router.get('/suspension-status', getSuspensionStatus);
+router.get("/suspension-status", authenticateIdentity, getSuspensionStatus);
 
 // Reactivation request (no auth middleware — suspended users need access)
-router.post('/reactivation-request', submitReactivationRequest);
+router.post(
+  "/reactivation-request",
+  authenticateIdentity,
+  submitReactivationRequest,
+);
 
 // Protected routes
-router.get('/me', authenticateUser, getMe);
-router.put('/me', authenticateUser, updateMe);
+router.get("/me", authenticateUser, getMe);
+router.put("/me", authenticateUser, updateMe);
 
 // Favourites
-router.get('/favourites', authenticateUser, getFavourites);
-router.post('/favourites/:propertyId', authenticateUser, toggleFavourite);
+router.get("/favourites", authenticateUser, getFavourites);
+router.post("/favourites/:propertyId", authenticateUser, toggleFavourite);
 
 export default router;
-
