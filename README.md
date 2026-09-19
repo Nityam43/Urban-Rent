@@ -36,18 +36,6 @@ The primary product flow is:
 
 The flow demonstrates the core data relationships between `Property`, `Application`, `Invoice`, and `Payment`, with Clerk identity verification and MongoDB-managed roles at the API boundary.
 
-## Mobile Walkthrough
-
-Open the live demo from a phone and check this sequence:
-
-1. Open `/demo` and select Tenant.
-2. Open Properties or Search from the mobile navigation.
-3. Open a property card and verify the image, rent, location, and primary action fit without horizontal scrolling.
-4. Sign in with the tenant test account and submit an application.
-5. Switch to the manager test account and approve the application.
-6. Return to the tenant account and verify the invoice and Razorpay checkout remain usable at narrow width.
-7. Confirm the back navigation, menu drawer, buttons, and form fields remain reachable with one hand.
-
 ## Screenshots
 
 ![UrbanRent property visual](client/public/images/property-1.png)
