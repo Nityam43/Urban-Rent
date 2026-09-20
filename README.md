@@ -38,9 +38,9 @@ The flow demonstrates the core data relationships between `Property`, `Applicati
 
 ## Screenshots
 
-![UrbanRent property visual](client/public/images/property-1.png)
-![UrbanRent property visual](client/public/images/property-2.png)
-![UrbanRent property visual](client/public/images/property-3.png)
+![UrbanRent property visual](https://res.cloudinary.com/dwlg8wohw/image/upload/v1779430389/urbanrent/properties/ezuq4kcmyaqhimq12scx.jpg)
+![UrbanRent property visual](https://res.cloudinary.com/dwlg8wohw/image/upload/v1779430387/urbanrent/properties/lpmxsc9jpx73ezez8rg7.jpg)
+![UrbanRent property visual](https://res.cloudinary.com/dwlg8wohw/image/upload/v1779428625/urbanrent/properties/qeut7w6rr9t8c3dwpomp.avif)
 
 ## What It Demonstrates
 
